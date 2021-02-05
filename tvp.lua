@@ -21,7 +21,7 @@
 --]]
 
 
-api_url = "http://vps.it-hobby.km.ua/TVP/"
+api_url = "http://tv-player.pp.ua/app/"
 local json = require("dkjson")
 
 function descriptor()
