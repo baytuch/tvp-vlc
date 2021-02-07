@@ -21,8 +21,7 @@
 --]]
 
 
-api_url = "http://tv-player.pp.ua/app/"
-local json = require("dkjson")
+api_url = "http://tv-player.pp.ua/app"
 
 function descriptor()
   return { title="TVP" }
@@ -34,7 +33,7 @@ function find(haystack, needle)
 end
 
 function main()
-  fd = vlc.stream(api_url.."api.php")
+  fd = vlc.stream(api_url.."/".."api.php")
   if not fd then return nil end
 
   line = fd:readline()
@@ -45,12 +44,13 @@ function main()
     line = fd:readline()
   end
 
+  local json = require("dkjson")
   local obj, pos, err = json.decode(buff, 1, nil)
 
   for i = 1, #obj.content do
     vlc.sd.add_item( {title  = obj.content[i].video,
-                      path = api_url.."media/video/"..obj.content[i].video,
-                      arturl = api_url.."image.php?thumb="..obj.content[i].thumb} )
+                      path = api_url.."/"..obj.mdir.."/"..obj.content[i].dir.."/"..obj.content[i].video,
+                      arturl = api_url.."/".."thumb.php?path="..obj.content[i].dir.."/"..obj.content[i].thumb} )
   end
 
 end
